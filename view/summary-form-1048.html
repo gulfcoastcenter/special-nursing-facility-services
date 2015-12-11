@@ -1,0 +1,262 @@
+<$html>
+<$body>
+<style>
+   @page {
+      size: auto;
+      margin: 25mm 25mm 25mm 25mm;
+   }
+   body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif !important;
+   }
+   .header td {
+      text-align: right;
+   }
+   .header td.logo {
+      text-align: left;
+   }
+   .title {
+      margin: 2%;
+      font-weight: bold;
+      font-size: 12pt;
+   }
+   .contact {
+      margin: 2% auto;
+   }
+   table {
+      font-family: Arial, sans-serif;
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+      empty-cells: show;
+   }
+   .address {
+      width: 80%;
+      margin: 2% 0;
+   }
+   .address table { 
+   }
+   .address td {
+      text-align: right;
+   }
+   .contact table {
+      border: 1px solid black;
+   }
+   .contact td {
+      text-align: center;
+      border: solid black 1px;
+   }
+   .contact thead {
+      background-color: lightgray;
+      border: solid black 1px;
+      font-weight: bold;
+   }
+   .contact thead th {
+      border-bottom: solid black 1px;
+      border-top: solid black 2px;
+      border-left: solid black 2px;
+      border-right: solid black 2px;
+      text-align: left;
+   }
+   .servicedetail { 
+      margin: 2% auto;
+   }
+   .servicedetail table { 
+      empty-cells: hide;
+   }
+   .servicedetail tbody tr {
+      border: 1px solid black;
+   }
+   .servicedetail td {
+      border: solid black 1px;
+   }
+   .servicedetail thead {
+      background-color: lightgray;
+      border: solid black 1px;
+      font-weight: bold;
+   }
+   .servicedetail thead th {
+      border: 1px solid black;
+   }
+   .servicedetail tfoot td {
+      empty-cells: hide;
+      border: none;
+   }
+   .servicedetail tfoot td.total {
+      border: 1px solid black;
+   }
+   .servicesummary {
+      width: 70%;
+      margin: 2% 13%;
+   }
+   .servicesummary table {
+      border: 1px solid black;
+   }
+   .servicesummary thead {
+      background-color: lightgray;
+      font-weight: bold;
+   }
+   .servicesummary td {
+      border: solid black 1px;
+   }
+   .servicesummary thead th {
+      border-bottom: solid black 1px;
+      border-top: solid black 2px;
+      border-left: solid black 2px;
+      border-right: solid black 2px;
+   }
+   div.signature {
+      margin: 1%;
+   }
+   .signature table {
+      border-spacing: 1em;
+   }
+   .signatureline td {
+      border-top: solid black 1px;
+   }
+
+</style>
+<div class='header'>
+   <table>
+      <tr>
+         <td class='logo'><img src='/cmhcbui/cmhcbuilocal/c1FRSH/img/txdads-logo.png'/></td>
+         <td>
+            <div><b>Form 1048</b></div>
+            <div>July 2015-E</div>
+         </td>
+      </tr>
+   </table>
+</div>
+<div class='title'>
+   Summary Sheet for Services to Individuals with IDD in a Nursing Facility
+</div>
+<div class='address'>
+   <table>
+      <tr>
+         <td><b>Local Intellectual and Developmental Dissability Authority:</b></td>
+         <td><$literal value='liddaname'/></td>
+      </tr>
+      <tr>
+         <td> Street Address</td>
+         <td><$literal value='liddastreet'/></td>
+      </tr>
+      <tr>
+         <td>City, State, Zip Code</td>
+         <td><$literal value='liddaaddress'/></td>
+      </tr>
+      <tr>
+         <td>Component Code</td>
+         <td><$literal value='liddaCompCode'/></td>
+      </tr>
+   </table>
+</div>
+<div class='contact'>
+   <table>
+      <thead>
+         <tr>
+            <th>Service Month and Year</th>
+            <th>Contact Person</th>
+            <th>Area Code and Telephone No.</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr>
+            <td><$literal value='servicedate'/></td>
+            <td><$literal value='liddaContact'/></td>
+            <td><$literal value='liddaPhone'/></td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+<div class='servicedetail'>
+   <table>
+      <thead>
+         <tr>
+            <th>Name of Individual</th>
+            <th>Local Case No.</th>
+            <th>Description of Service</th>
+            <th>Unit</th>
+            <th>Rate</th>
+            <th>Total</th>
+         </tr>
+      </thead>
+      <tbody>
+         <$literal value='l_servicedata'/>
+      </tbody>
+      <tfoot>
+         <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total: </td>
+            <td class='total'>$<$literal value='grandtotal'/></td>
+         </tr>
+      </tfoot>
+   </table>
+</div>
+<div class='servicesummary'>
+   <table>
+      <thead>
+         <tr>
+            <th>Services Summary</th>
+            <th>Total Due:</th>
+         </tr>
+      </thead>
+      <tr>
+         <td>Behavioral Support</td>
+         <td>$<$literal value='sac_totals' idx='1' idx2='5051'/></td>
+      </tr>
+      <tr>
+         <td>Day Habilitation 1 - 2.9 Hours</td>
+         <td>$<$literal value='sac_totals' idx='5052'/></td>
+      </tr>
+      <tr>
+         <td>Day Habilitation 3 + Hours</td>
+         <td>$<$literal value='sac_totals' idx='5057'/></td>
+      </tr>
+      <tr>
+         <td>Determination of Intellectual Disability Assessment</td>
+         <td>$<$literal value='sac_totals' idx='1' idx2='5050'/></td>
+      </tr>
+      <tr>
+         <td>Employment Assistance Per Hour</td>
+         <td>$<$literal value='sac_totals' idx='5053'/></td>
+      </tr>
+      <tr>
+         <td>Independent Living Skills Training Per Hour</td>
+         <td>$<$literal value='sac_totals' idx='5054'/></td>
+      </tr>
+      <tr>
+         <td>Non-HCS or TxHmL Service Coordination Face-to-Face</td>
+         <td>$<$literal value='sac_totals' idx='5056'/></td>
+      </tr>
+      <tr>
+         <td>Supported Employment Per Hour</td>
+         <td>$<$literal value='sac_totals' idx='5055'/></td>
+      </tr>
+   </table>
+</div>
+<h6>I certify by submission of this form that it complies with the form instructions</h6>
+<div class='signature'>
+   <table>
+      <tr>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr class='signatureline'>
+         <td>Print Name</td>
+         <td>Signature</td>
+         <td>Date</td>
+      </tr>
+   </table>
+</div>
+
+<center>
+<$print />
+</center>
+
+<$/body>
+<$/html>

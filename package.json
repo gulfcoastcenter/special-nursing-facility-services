@@ -1,0 +1,15 @@
+{
+  "name": "special-nursing-facility-services",
+  "version": "0.0.1",
+  "description": "PASRR IDD Nursing Facility Specialized Services",
+  "main": "deploy.js",
+  "repository": {
+    "type": "git",
+    "url": "https://gihub.com/gulfcoastcenter/special-nursing-facility-services.git"
+  },
+  "author": "tim",
+  "license": "ISC",
+  "dependencies": {
+    "mis-util": "^0.5"
+  }
+}

@@ -1,0 +1,15 @@
+* config for 1048 summary form
+*
+script nf-event-summary(SNSSUMRY)
+*
+dsnfile dw_read
+*
+liddaname Gulf Coast Center
+liddastreet 123 Rosenburg
+liddaaddress Galveston, TX 77550
+liddacompcode 100
+*
+liddacontact Donna Gordan
+liddaphone 281-585-7357
+*
+ru 6137

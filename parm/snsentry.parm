@@ -1,0 +1,23 @@
+*PARM SETTINGS FOR EVENTENTY SCRIPT
+* These setting are for the
+*  PASRR Specialized
+*  Nursing Services
+*
+*Call from menu
+SCRIPT EventEntry (SNSENTRY)
+*
+* Script configuration
+*
+TITLE PASRR Specialised Nursing Facilty Services
+ALLOWABLE_DAYS 45
+ALLOWMULTICLT Y
+PROVIDERTYPE M
+PROVIDERSTAT E
+DEFRU 6137
+PROVRU 6137
+NOTERULETYPE F
+NOTEFORCE SNSEXT
+COPYDATA Y
+DEFLOC 5
+DEFRECIP 1
+DEFATT 1

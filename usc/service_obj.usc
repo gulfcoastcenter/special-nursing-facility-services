@@ -1,0 +1,135 @@
+library service_obj()
+
+on load do:
+
+_cid[]      is x
+_name[]     is x
+_ser[]      is x
+_desc[]     is x
+_rate[]     is x
+_total[]    is x
+_units[]    is x
+
+%global _cid[], _name[], _ser[], _desc[], _rate[], _total[], _units[]
+
+return
+
+public dynamic function cids.set(cid[]) is void
+cid[]    is x
+_cid[] = cid[]
+end cids.set
+
+public dynamic function names.set(name[]) is void
+name[]   is x
+
+_name[] = name[]
+end names.set
+
+public dynamic function service.set(ser[]) is void
+ser[]    is x
+_ser[] = ser[]
+end service.set
+
+public dynamic function sac_desc.set(desc[]) is void
+desc[]   is x
+_desc[] = desc[]
+end sac_desc.set
+
+public dynamic function rate.set(rate[]) is void
+rate[]   is x
+_rate[] = rate[]
+end rate.set
+
+public dynamic function total.set(total[]) is void
+total[]  is x
+_total[] = total[]
+end total.set
+
+public dynamic function units.set(units[]) is void
+units[]  is x
+_units[] = units[]
+end units.set
+
+public dynamic function names.get()[] is x
+names.get[] = _name[]
+end names.get
+
+public dynamic function cids.get()[] is x
+cids.get[] = _cid[]
+end cids.get
+
+public dynamic function sac_desc.get()[] is x
+sac_desc.get[] = _desc[]
+end sac_desc.get
+
+public dynamic function units.get()[] is x
+units.get[] = _units[]
+end units.get
+
+public dynamic function rates.get()[] is x
+rates.get[] = _rate[]
+end rates.get
+
+public dynamic function total.get()[] is x
+total.get[] = _total[]
+end total.get
+
+public dynamic function grandtotal() is x 'sac-list[])[] is x
+'sac-list[]    is x
+i              is b
+total          is n
+
+i = 0
+do while i++ < $maxarray(_total[])
+   total = total + $num(_total[i])
+enddo
+'if sac-list[] !dp then
+   'grandtotal[1] = sumall()
+'else
+   'i = 0
+   'do while i++ < $maxarray(sac-list[])
+      'grandtotal[i] = sumservice(sac-list[i])
+   'enddo
+'endif
+grandtotal = total
+end grandtotal
+
+public dynamic function subtotalbyser()[] is n
+totals[]    is n
+i           is b
+ser         is b
+rate        is b
+
+i = 0
+do while i++ < $maxarray(_ser[])
+   ser = $num(_ser[i])
+   subtotalbyser[ser] = subtotalbyser[ser] + $num( _total[i] )
+enddo
+'subtotalbyser[,] = totals[,]
+end subtotalbyser
+
+private dynamic function sumall() is x
+i        is b
+total    is n
+
+i = 0
+do while i++ < $maxarray(_total[])
+   total = total + $num(_total[i])
+enddo
+sumall = total
+end sumall
+
+private dynamic function  sumservice(service) is x
+service        is x
+ser            is b
+
+total          is x
+total = 0
+
+ser = $find(service, _ser[], 1, "F")
+do while ser > 0
+   total = $num(total) + $num(_total[ser])
+   ser = $find(service, _ser[], ser, "F")
+enddo
+end sumservice
+

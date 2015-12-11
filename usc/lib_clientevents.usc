@@ -1,0 +1,105 @@
+library lib_clientevents()
+
+on load do:
+
+   sql-lib     is b
+   %global sql-lib
+return
+
+public dynamic function getSerSummary(handle, ru, startdate, enddate) is b
+
+handle      is b
+ru          is x
+startdate   is d
+enddate     is d
+
+summary     is b
+
+sql-lib = handle
+
+summary = queryservices(ru, startdate, enddate)
+
+getSerSummary = summary
+
+end getSerSummary
+
+private dynamic function newServiceObj() is b
+
+handle      is b
+(void)$loadlib(handle, "service_obj")
+newServiceObj = handle
+
+end newServiceObj
+
+private dynamic function queryservices(ru, startdate, enddate) is b
+
+ru    is x
+startdate   is d
+enddate     is d
+
+cid[]       is x
+name[]      is x
+ser[]       is x
+desc[]      is x
+rate[]      is x
+units[]     is x
+total[]     is x
+
+servicelist is b
+i           is b
+
+select      is x
+results[]   is x
+
+servicelist = newServiceObj()
+
+select = $format(ru, startdate, enddate, "exec sp_SpecializedServiceSummary ~~~~, 'MM/DD/YYYY', 'MM/DD/YYYY'")
+
+'select = "select e.clientid "
+'select += ", c.lastname + ', ' + c.firstname"
+'select += ", e.sac"
+'select += ", s.description"
+'select += ", s.UOSFee"
+'select += ", e.ComputedFee"
+'select += ", e.ComputedFee / s.UOSFee"
+'select += " from Client.events"
+'select += " left join Client.client_record c"
+'select += " on c.clientid = e.clientid"
+'select += " left join SysFile.sac s"
+'select += " on s.sac = e.sac"
+'select += " where ru = " + ru 
+'select += " and eventdate between " 
+'select += $format(startdate, "MM/DD/YYYY") 
+'select += " and " + $format(enddate, "MM/DD/YYYY")
+
+sql-lib:q(select, results[])
+
+i = 0
+do while i++ < $maxarray(results[])
+   $parsem(results[i], 1, "|", cid[i], name[i], ser[i], desc[i], rate[i], total[i], units[i])
+enddo
+servicelist:cids.set(cid[])
+servicelist:names.set(name[])
+servicelist:service.set(ser[])
+servicelist:sac_desc.set(desc[])
+servicelist:rate.set(rate[])
+servicelist:total.set(total[])
+servicelist:units.set(units[])
+
+queryservices = servicelist
+end queryservices
+
+private dynamic function getnames (cids[])[] is x
+cids[]      is x
+i           is b
+
+c.fn        is x
+c.ln        is x
+
+i = 0
+do while i++ < $maxarray(cids[])
+   (void)$dbread(2, cids[i], c.fn, c.ln)
+   getnames[i] = c.ln + ", " + c.fn
+enddo
+end getnames
+

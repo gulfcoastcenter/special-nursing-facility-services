@@ -1,0 +1,153 @@
+start nf-event-summary (parmfile, option, client, retcode)
+
+parmfile    is x
+option      is x
+client      is x
+retcode     is b
+
+dsnfile     is x
+
+ru          is x
+startdate   is d
+enddate     is d
+servicedate is x
+
+sql-lib     is b
+sac-lib     is b
+service_obj is b
+
+liddaname   is x
+liddastreet is x
+liddaaddress   is x
+liddacompcode  is x
+liddacontact   is x
+liddaphone     is x
+
+names[]     is x
+cids[]      is x
+sac_desc[]  is x
+units[]     is x
+rates[]     is x
+total[]     is x
+
+grand_total is x
+sac_totals[]   is x
+sacs[]         is x
+
+l_servicedata  is x
+summary_view   is x
+
+%include inc_sysLibDef
+
+summary_view = $sysname + "/CUST/forms/summary-form-1048.html"
+
+getparm(parmfile)
+getoption(option)
+
+retcode = $loadlib(sql-lib, "LIB-freetds")
+retcode = $loadlib(sac-lib, "lib_clientevents")
+
+sql-lib:useDSN(dsnfile)
+
+if startdate !dp or enddate !dp then
+   if startdate !dp then
+      startdate = $format($today, "MM/01/YYYY")
+      startdate = $dateoffset(startdate,,-1)
+   endif
+
+   if enddate !dp then
+      enddate = $format($today, "MM/01/YYYY")
+      enddate = $dateoffset(enddate,-1)
+   endif
+
+   retcode = 1
+   do while retcode = 1
+      $form("dates")
+         $text("{h1}Summary Sheet for Services to Individuals with IDD in a Nursing Facility{/h1}")
+         $text("{h2}Dates to Summarize{/h2}")
+         $text("Start Date")
+         $textbox(startdate, "CAL")
+         $text("End Date")
+         $textbox(enddate, "CAL")
+      $sendform("dates")
+
+      select $endbutton
+         case "CANCEL"  return
+         case "SUBMIT"  if startdate dp and enddate dp then
+                           retcode = 0
+                        endif
+      endselect
+   enddo
+endif
+
+servicedate = $format(startdate, enddate, "MM/DD/YYYY - MM/DD/YYYY")
+
+service_obj = sac-lib:getSerSummary(sql-lib, ru, startdate, enddate)
+
+names[] = service_obj:names.get()
+cids[] = service_obj:cids.get()
+sac_desc[] = service_obj:sac_desc.get()
+units[] = service_obj:units.get()
+rates[] = service_obj:rates.get()
+total[] = service_obj:total.get()
+
+grand_total = service_obj:grandtotal()
+
+sac_totals[] = service_obj:subtotalbyser()
+sac_totals[5050] = sac_totals[5050]
+sac_totals[5051] = sac_totals[5051]
+sac_totals[5052] = sac_totals[5052]
+
+'build the uhp table
+'$form("test")
+   l_servicedata = ""
+   do while retcode++ < $maxarray(cids[], names[])
+      l_servicedata += "<tr>"
+      l_servicedata += "<td>" + names[retcode] + "</td>"
+      l_servicedata += "<td>" + cids[retcode] + "</td>"
+      l_servicedata += "<td>" + sac_desc[retcode] + "</td>"
+      l_servicedata += "<td>" + units[retcode] + "</td>"
+      l_servicedata += "<td>" + rates[retcode] + "</td>"
+      l_servicedata += "<td>" + total[retcode] + "</td>"
+      l_servicedata += "</tr>"
+      '$text(names[retcode])
+      '$text(" : ")
+      '$text(cids[retcode])
+      '$text(" : ")
+      ''$text(sac_desc[retcode])
+      '$text(" : ")
+      '$text(units[retcode])
+      '$text(" : ")
+      '$text(rates[retcode])
+      ''$text(" : ")
+      '$text(total[retcode])
+      '$br()
+   enddo
+   '$text(grand_total)
+   '$br()
+   'idx is b
+   'ydx is b
+   'j is b
+   'sacrates[,] is x
+   'retcode = 0
+   'do while retcode++ < $maxarray(sacs[])
+      'idx = $num( sacs[retcode] )
+      '$text(sac_totals[idx])
+      '$br()
+   'enddo
+'$sendform()
+
+'display the form
+do while 1 = 1
+   uhp(summary_view)
+   select $endbutton
+      case "CANCEL"  return
+      case "SUBMIT"  return
+   endselect
+enddo
+
+end nf-event-summary
+
+%include inc_GetParm
+%include inc_GetOption
+%include inc_uhp
