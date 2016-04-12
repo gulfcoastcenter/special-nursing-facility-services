@@ -100,6 +100,7 @@ sac_totals[5052] = sac_totals[5052]
 
 'build the uhp table
 '$form("test")
+   retcode = 0
    l_servicedata = ""
    do while retcode++ < $maxarray(cids[], names[])
       l_servicedata += "<tr>"
